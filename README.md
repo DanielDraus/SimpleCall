@@ -1,8 +1,6 @@
 Logs :
 
-https://10.42.236.11/home/ute/btsauto/AutoTest/automated_19-01-18_10-38-23/log.html
-
-Supported phones:
+Supported Samsung rooted phones:
 
 "model"               : "SM-J510FN"
 "model"               : "GT-I950"
@@ -22,14 +20,14 @@ Req.
 
 5.PowerShell on Ue Pc
 
-6.samba-common-bin on VM
+6.samba-common-bin on VM or host PC
 
 7.Python 2.7
 
 
 Instalation :
 
-pip install -U git+https://gitlabe1.ext.net.nokia.com/draus/hran_IV8.git@master --no-deps
+pip install -U git+https://github.com/DanielDraus/SimpleCall.git@master --no-deps
 
 Python usage1:
 
@@ -37,36 +35,36 @@ Python usage1:
                         'alias': "daniel test",
                         'ip': "10.44.131.181",
                         'port': 9091,
-                        'uname': 'sranwro8',
-                        'domain': 'NOKLAB',
-                        'passwd': 'wro8pass'
+                        'uname': 'username',
+                        'domain': 'SomeDomain',
+                        'passwd': 'password'
                     }
 
-    IV8_res1 = SimpleCallInterface(**test_params)
+    s_call_instance = SimpleCallInterface(**test_params)
 
     iperfclass = IperfClass("10.44.44.167", "syslab", "system")
 
-    IV8_res1.setup_pc(iperfclass)
+    s_call_instance.setup_pc(iperfclass)
 
     try:
-        IV8_res1.check_ssh()
+        s_call_instance.check_ssh()
     except:
-        IV8_res1.reboot_ue_pc()
+        s_call_instance.reboot_ue_pc()
 
-        IV8_res1.setup_all_ues()
-        IV8_res1.make_voice_call_for_rat("GSM")
-        IV8_res1.make_ps_call_for_rat("GSM")
-        IV8_res1.make_voice_call_for_rat("WCDMA")
-        IV8_res1.make_ps_call_for_rat("WCDMA")
-        IV8_res1.make_ps_call_for_rat("LTE")
-        IV8_res1.teardown()
+        s_call_instance.setup_all_ues()
+        s_call_instance.make_voice_call_for_rat("GSM")
+        s_call_instance.make_ps_call_for_rat("GSM")
+        s_call_instance.make_voice_call_for_rat("WCDMA")
+        s_call_instance.make_ps_call_for_rat("WCDMA")
+        s_call_instance.make_ps_call_for_rat("LTE")
+        s_call_instance.teardown()
 
 
 Python usage2:
 
 
-    from hran_IV8.interfaces.SimpleCall.SimpleCallInterface import SimpleCallInterface
-    from hran_IV8.interfaces.SimpleCall.Utils import IperfClass, BANDS
+    from simple_call.interfaces.SimpleCall.SimpleCallInterface import SimpleCallInterface
+    from simple_call.interfaces.SimpleCall.Utils import IperfClass, BANDS
     import base64
 
     #define SimpleCallInterface parameters
@@ -74,30 +72,30 @@ Python usage2:
         'alias': "daniel test",
         'ip': "10.44.131.181",
         'port': 9091,
-        'uname': 'sranwro8',
-        'domain': 'NOKLAB',
-        'passwd': 'wro8pass'
+        'uname': 'username',
+        'domain': 'DOMAIN',
+        'passwd': 'password'
     }
 
     #create SimpleCall instance
-    IV8_res1 = SimpleCallInterface(**test_params)
+    s_call_instance = SimpleCallInterface(**test_params)
     #create IperfClass instance
     iperfclass = IperfClass("10.44.44.167", "syslab", "system")
 
     #setup UE_PC
-    IV8_res1.setup_pc(iperfclass)
+    s_call_instance.setup_pc(iperfclass)
 
     #Check if sshd service is running on UE_PC
-    IV8_res1.check_ssh()
+    s_call_instance.check_ssh()
 
     #Reboot UE_PC
-    IV8_res1.reboot_ue_pc()
+    s_call_instance.reboot_ue_pc()
 
     #setup Iperf Server
-    IV8_res1.setup_iperf_server("10.44.44.167", "syslab", "system")
+    s_call_instance.setup_iperf_server("10.44.44.167", "syslab", "system")
 
     #setup UEs
-    IV8_res1.setup_ues([{"ue_alias": "0279cef6", "ue_adb_sn": "0279cef6"},
+    s_call_instance.setup_ues([{"ue_alias": "0279cef6", "ue_adb_sn": "0279cef6"},
                         {"ue_alias": "de73a8d2", "ue_adb_sn": "de73a8d2"},
                         {"ue_alias": "ae0fb898", "ue_adb_sn": "ae0fb898"},
                         {"ue_alias": "adf8b824", "ue_adb_sn": "adf8b824"},
@@ -107,23 +105,23 @@ Python usage2:
     supported_bands = [i for i in dir(BANDS) if not callable(i) and not "__module__" in i and not "__doc__" in i]
 
     #Run single AT Commnad on UE
-    print(IV8_res1.run_at_command("ae0fb898", [base64.b64encode("AT$QCBANDPREF=?")]))
+    print(s_call_instance.run_at_command("ae0fb898", [base64.b64encode("AT$QCBANDPREF=?")]))
 
     #Test all supported bands change on UE:
     for a in supported_bands:
-        IV8_res1.set_band_by_at([a],"ae0fb898")
+        s_call_instance.set_band_by_at([a],"ae0fb898")
 
     #Change UE band example:
-    IV8_res1.set_band_by_at(["Any"], "ae0fb898")
+    s_call_instance.set_band_by_at(["Any"], "ae0fb898")
 
     #Print all UEs cell id
-    print(IV8_res1.get_all_ues_cellid())
+    print(s_call_instance.get_all_ues_cellid())
 
     #Change UE band example:
-    IV8_res1.set_band_by_at(["GSM_EGSM_900"], "0279cef6")
+    s_call_instance.set_band_by_at(["GSM_EGSM_900"], "0279cef6")
 
     #Toogle AirPlane mode on UE:
-    IV8_res1.toogleAirplane("0279cef6")
+    s_call_instance.toogleAirplane("0279cef6")
 
 
     #Create Commands List
@@ -150,29 +148,29 @@ Python usage2:
                 setmodelte, cell_info_cmd]
 
     #Run and print AT Commands List on UE
-    print(IV8_res1.run_at_command("0279cef6", commands))
+    print(s_call_instance.run_at_command("0279cef6", commands))
 
     '''Show UE table:
     'Android version','IMEI','Network type','IP','Model',Airplane settings'
     'SignalStrength','Battery level','Battery temperature','Battery health'
     'Cell_Id','Com port'
     '''
-    IV8_res1.show_ue_table("0279cef6")
+    s_call_instance.show_ue_table("0279cef6")
 
     #Make AMR call with number
-    IV8_res1.make_voice_call("0279cef6", "0666002", 10)
+    s_call_instance.make_voice_call("0279cef6", "0666002", 10)
 
     #Make Data call with default arguments
-    IV8_res1.make_ps_call("0279cef6","10")
+    s_call_instance.make_ps_call("0279cef6","10")
 
     #Make Data call with arguments
-    IV8_res1.make_ps_call("0279cef6","10",cnt=3,bandwidth="240",dl_max="20000000",dl_min="9000000",ul_max="12000000",ul_min="6000000")
+    s_call_instance.make_ps_call("0279cef6","10",cnt=3,bandwidth="240",dl_max="20000000",dl_min="9000000",ul_max="12000000",ul_min="6000000")
 
     #install iperf on UE under /system/bin
-    IV8_res1.iperf_installer.install_iperf("0279cef6")
+    s_call_instance.iperf_installer.install_iperf("0279cef6")
 
     #Set band for UE by Service Menu
-    IV8_res1.set_band("DD",2,"WCDMA","B1")
+    s_call_instance.set_band("DD",2,"WCDMA","B1")
 
 
 
@@ -182,41 +180,41 @@ AMR CALL:
 
 
     *** Settings ***
-    library  hran_IV8
+    library  simple_call
 
     *** Test Cases ***
     Make Voice Call for all connected UEs
         [Tags]    DEBUG
         Provided precondition
-        hran_IV8.Make voice call for rat  WCDMA
-        hran_IV8.Make voice call for rat  GSM
+        simple_call.Make voice call for rat  WCDMA
+        simple_call.Make voice call for rat  GSM
 
     *** Keywords ***
     Provided precondition
-        hran_IV8.Register UE PC  UEPC
-        hran_IV8.Register Ftp  FTP
-        hran_IV8.Setup all ues
+        simple_call.Register UE PC  UEPC
+        simple_call.Register Ftp  FTP
+        simple_call.Setup all ues
 
 
 DATA CALL:
 
 
     *** Settings ***
-    library  hran_IV8
+    library  simple_call
 
     *** Test Cases ***
     Make Data Call for all connected UEs
         [Tags]    DEBUG
         Provided precondition
-        hran_IV8.Make PS call for rat  LTE
-        hran_IV8.Make PS call for rat  WCDMA
-        hran_IV8.Make PS call for rat  GSM
+        simple_call.Make PS call for rat  LTE
+        simple_call.Make PS call for rat  WCDMA
+        simple_call.Make PS call for rat  GSM
 
     *** Keywords ***
     Provided precondition
-        hran_IV8.Register UE PC  UEPC
-        hran_IV8.Register Ftp  FTP
-        hran_IV8.Setup all ues
+        simple_call.Register UE PC  UEPC
+        simple_call.Register Ftp  FTP
+        simple_call.Setup all ues
 
 
 Warning: CryptographyDeprecationWarning: · Issue #1386:

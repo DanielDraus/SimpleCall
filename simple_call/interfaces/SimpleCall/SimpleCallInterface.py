@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Nokia Networks
 :author: Daniel Draus
-:contact: daniel.draus@nokia.com
+:contact: danieldraus1@interia.pl
 """
 
 import traceback
@@ -380,15 +379,11 @@ class SimpleCallInterface(object):
         stdout, stderr = self.start_process_by_ssh(cmd, 3)
         mylogger.debug("_check_su,{}\n---stdout={}\n***\nstderr={}---\n\n".format(cmd, stdout, stderr))
         if not stdout:
-            raise UemExtPhoneException("UE {} SuperUser Error. Please eneable super user on UE\n\tFollow instruction:"
-                                       "https://confluence.int.net.nokia.com/pages/viewpage.action?pageId"
-                                       "=706663048#UEsetupinstructions-UEAndroidapplicationsetup".format(adb_sn))
+            raise UemExtPhoneException("UE {} SuperUser Error. Please enable super user on UE".format(adb_sn))
         else:
             if "su: not found" in "{}".format(stdout).lower():
                 raise UemExtPhoneException(
-                    "UE {} SuperUser Error. Please eneable super user on UE\n\tFollow instruction:"
-                    "https://confluence.int.net.nokia.com/pages/viewpage.action?pageId"
-                    "=706663048#UEsetupinstructions-UEAndroidapplicationsetup".format(adb_sn))
+                    "UE {} SuperUser Error. Please enable super user on UE".format(adb_sn))
 
     def _run_ssh_command(self, command):
         "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "
@@ -2499,9 +2494,9 @@ if __name__ == "__main__":
                         'alias': "daniel test",
                         'ip': "10.44.131.156",#,,181,,181,155,154,182
                         'port': 9091,
-                        'uname': 'sranwro8',
-                        'domain': 'NOKLAB',
-                        'passwd': 'wro8pass'
+                        'uname': 'username',
+                        'domain': 'DOMAIN',
+                        'passwd': 'password'
                     }
 
         IV8_res1 = SimpleCallInterface(**test_params)

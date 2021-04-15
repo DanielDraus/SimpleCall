@@ -5,13 +5,13 @@ with open('README.md') as file_:
 
 install_requires = [line.rstrip('\n') for line in open('requirements.txt')]
 setup(
-    name='hran_IV8',
+    name='simple_call',
     version='1.0.3',
     packages=find_packages(),
-    license='For Nokia Internal Use',
+    license='Public',
     author='draus',
-    author_email='daniel.draus@nokia.com',
-    description='HRAN SimpleCall',
+    author_email='danieldraus1@interia.pl',
+    description='SimpleCall',
     long_description=long_description,
     include_package_data=True,
     install_requires=install_requires

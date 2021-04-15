@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Nokia Networks
 :author: Daniel Draus
-:contact: daniel.draus@nokia.com
+:contact: danieldraus1@interia.pl
 """
 import re
 from ute_common_store.store import Store
@@ -35,10 +34,10 @@ from .interfaces.SimpleCall.Utils import IperfClass
 from .interfaces.SimpleCall.Utils import BTS
 
 
-class hran_IV8(object):
+class simple_call(object):
 
     ROBOT_LIBRARY_SCOPE = 'TEST SUITE'
-    _hran_simple_call = SimpleCall()
+    simple_call_instance = SimpleCall()
     _iperfclass = IperfClass("", "", "")
     _active_pc = None
 
@@ -48,12 +47,12 @@ class hran_IV8(object):
     def register_ue_pc(self, uepc_alias="default",
                        uepc_host="",
                        pyro_port=9091,
-                       uepc_username="sranwro8",
-                       uepc_password="wro8pass",
-                       uepc_domain="NOKLAB",
+                       uepc_username="username",
+                       uepc_password="password",
+                       uepc_domain="DOMAIN",
                        robot=True):
 
-        self._hran_simple_call = SimpleCall(alias=uepc_alias,
+        self.simple_call_instance = SimpleCall(alias=uepc_alias,
                                             ip=uepc_host,
                                             port=pyro_port,
                                             domain=uepc_domain,
@@ -61,8 +60,8 @@ class hran_IV8(object):
                                             passwd=uepc_password,
                                             robot=robot)
 
-        self._hran_simple_call.setup_pc(self._iperfclass)
-        simple_call = self._hran_simple_call
+        self.simple_call_instance.setup_pc(self._iperfclass)
+        simple_call = self.simple_call_instance
         try:
             self.store.add(simple_call, uepc_alias)
             self._active_pc = self.store.get(uepc_alias)
@@ -92,7 +91,7 @@ class hran_IV8(object):
                                                   self._iperfclass.username,
                                                   self._iperfclass.password)
         else:
-            self._hran_simple_call.setup_iperf_server(self._iperfclass.pc_host_ip,
+            self.simple_call_instance.setup_iperf_server(self._iperfclass.pc_host_ip,
                                                   self._iperfclass.username,
                                                   self._iperfclass.password)
 

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-:copyright: Nokia Networks
 :author: Daniel Draus
-:contact: daniel.draus@nokia.com
+:contact: danieldraus1@interia.pl
 """
 
 from paramiko import SSHClient, AutoAddPolicy, SSHException
@@ -157,8 +156,8 @@ class IperfInstaller(object):
 if __name__ == "__main__":
     test_params = {
         'ip': "10.44.131.181",
-        'uname': 'sranwro8',
-        'passwd': 'wro8pass'
+        'uname': 'username',
+        'passwd': 'password'
     }
     import logging
 
@@ -176,8 +175,8 @@ if __name__ == "__main__":
     mylogger.addHandler(fh)
 
     test_params = {'ip': "10.44.131.181",
-                    'uname': 'sranwro8',
-                    'passwd': 'wro8pass',
+                    'uname': 'username',
+                    'passwd': 'password',
                     'logger' : mylogger
                     }
 
